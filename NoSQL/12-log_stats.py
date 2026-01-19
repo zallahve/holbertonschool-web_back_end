@@ -4,6 +4,7 @@ from pymongo import MongoClient
 
 
 def main():
+    """Print stats about nginx logs stored in MongoDB in the required format."""
     client = MongoClient('mongodb://127.0.0.1:27017')
     collection = client.logs.nginx
 
@@ -12,7 +13,8 @@ def main():
     print("Methods:")
 
     for method in ["GET", "POST", "PUT", "PATCH", "DELETE"]:
-        print(f"\tmethod {method}: {collection.count_documents({'method': method})}")
+        count = collection.count_documents({"method": method})
+        print(f"\tmethod {method}: {count}")
 
     status = collection.count_documents({"method": "GET", "path": "/status"})
     print(f"{status} status check")
